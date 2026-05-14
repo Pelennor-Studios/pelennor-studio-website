@@ -7,42 +7,42 @@ const films = [
     subtitle: 'The forgotten chapter',
     description: 'The Hobbits return home to find it overrun -- and must reclaim it by their own hand.',
     genre: 'Tolkien Adaptation',
-    gradient: 'from-emerald-900 via-emerald-800 to-stone-900',
+    bg: '#2d3a2e',
   },
   {
     title: 'Restoring Tolkien',
     subtitle: 'Reclaiming the author',
     description: 'Separating the man from the mythmakers -- a documentary reclaiming Tolkien\'s true vision.',
     genre: 'Documentary',
-    gradient: 'from-indigo-900 via-slate-800 to-stone-900',
+    bg: '#3a2e3d',
   },
   {
     title: 'The Dragon and The Raven',
     subtitle: 'Alfred the Great',
     description: 'A young king defends his kingdom against Viking invaders and forges a nation from the flames.',
     genre: 'Historical Epic',
-    gradient: 'from-red-950 via-red-900 to-stone-900',
+    bg: '#4a2020',
   },
   {
     title: 'The Reformation in England',
     subtitle: 'When the Word broke through',
     description: 'The dangerous story of how scripture crossed the Channel and set a nation ablaze.',
     genre: 'Historical Drama',
-    gradient: 'from-stone-800 via-neutral-800 to-stone-900',
+    bg: '#3d3527',
   },
   {
     title: "Pilgrim's Progress",
     subtitle: 'The journey beyond',
     description: 'Christian leaves the City of Destruction -- an allegory that has inspired readers for three centuries.',
     genre: 'Allegorical Epic',
-    gradient: 'from-sky-950 via-sky-900 to-stone-900',
+    bg: '#1f3545',
   },
   {
     title: 'The Word of The Lord',
     subtitle: 'How Scripture shaped a nation',
     description: 'From parchment to pulpit to people -- the untold story of how the English Bible changed everything.',
     genre: 'Historical Epic',
-    gradient: 'from-amber-900 via-yellow-900 to-stone-900',
+    bg: '#5a3a1a',
   },
 ];
 ---
@@ -95,35 +95,60 @@ const films = [
         </a>
       </div>
     </div>
-
     <div class="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
       <svg class="w-5 h-5 text-smoke/50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/></svg>
     </div>
   </section>
 
-  <!-- Films -- Full-screen slides -->
-  <section id="films">
+  <!-- Films -- Full-screen slides with sticky progress bar -->
+  <section id="films" class="relative" data-films-section>
+    <!-- Sticky progress bar -->
+    <div id="film-progress-bar" class="sticky top-16 z-40 bg-white/90 backdrop-blur-md border-b border-graphite/10 hidden" data-progress-bar>
+      <div class="max-w-7xl mx-auto px-6 lg:px-8">
+        <div class="flex items-center justify-between h-12">
+          <div class="flex items-center gap-4">
+            <span id="film-progress-label" class="text-xs font-semibold tracking-widest text-accent uppercase" data-progress-label>01 / 06</span>
+            <span id="film-progress-title" class="text-sm font-display text-ink truncate max-w-[200px]" data-progress-title>The Scouring of The Shire</span>
+          </div>
+          <button id="film-next-btn" class="flex items-center gap-2 text-sm font-medium text-ink hover:text-accent transition-colors group" data-next-btn>
+            Next Film
+            <svg class="w-5 h-5 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+          </button>
+        </div>
+      </div>
+      <div class="h-0.5 bg-graphite/10">
+        <div id="film-progress-fill" class="h-full bg-ink transition-all duration-300 ease-out" style="width: 0%"></div>
+      </div>
+    </div>
+
     {films.map((film, i) => (
-      <div class="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br {film.gradient}">
+      <div class="relative min-h-screen flex items-center justify-center overflow-hidden" data-film-slide style={`background-color: ${film.bg};`}>
         <!-- Subtle background pattern -->
-        <div class="absolute inset-0 opacity-[0.04]" style="background-image: radial-gradient(circle at 1px 1px, white 1px, transparent 0); background-size: 40px 40px;"></div>
-        
+        <div class="absolute inset-0 opacity-[0.03]" style="background-image: radial-gradient(circle at 1px 1px, white 1px, transparent 0); background-size: 32px 32px;"></div>
+
         <div class="relative z-10 text-center px-6 max-w-3xl">
-          <span class="inline-block text-xs font-semibold tracking-[0.3em] text-white/60 uppercase mb-4">{film.genre}</span>
+          <span class="inline-block text-xs font-semibold tracking-[0.3em] text-white/50 uppercase mb-4">{film.genre}</span>
           <h2 class="text-5xl md:text-7xl lg:text-8xl font-bold text-white tracking-tight leading-[0.95] mb-4 font-display">
             {film.title}
           </h2>
-          <p class="text-lg md:text-xl text-white/70 font-light italic mb-6 font-display">{film.subtitle}</p>
-          <p class="text-base md:text-lg text-white/50 font-light max-w-xl mx-auto leading-relaxed">
+          <p class="text-lg md:text-xl text-white/60 font-light italic mb-6 font-display">{film.subtitle}</p>
+          <p class="text-base md:text-lg text-white/40 font-light max-w-xl mx-auto leading-relaxed">
             {film.description}
           </p>
           <div class="mt-10">
-            <span class="inline-block text-xs font-semibold tracking-[0.2em] text-white/40 uppercase border border-white/20 px-4 py-2 rounded-sm">Coming Soon</span>
+            <span class="inline-block text-xs font-semibold tracking-[0.2em] text-white/30 uppercase border border-white/15 px-4 py-2 rounded-sm">Coming Soon</span>
           </div>
         </div>
 
+        <!-- Large right arrow -->
+        {i < films.length - 1 && (
+          <button class="absolute right-6 md:right-12 top-1/2 -translate-y-1/2 z-20 w-14 h-14 md:w-20 md:h-20 flex items-center justify-center rounded-full border border-white/20 text-white/60 hover:text-white hover:border-white/50 hover:bg-white/10 transition-all group" data-scroll-next aria-label="Next film">
+            <svg class="w-6 h-6 md:w-8 md:h-8 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+          </button>
+        )}
+
         <!-- Slide number -->
-        <div class="absolute bottom-8 right-8 text-white/20 text-sm font-display">
+        <div class="absolute bottom-8 right-8 text-white/15 text-sm font-display">
           {String(i + 1).padStart(2, '0')} / {String(films.length).padStart(2, '0')}
         </div>
       </div>
@@ -138,7 +163,6 @@ const films = [
           <span class="text-xs font-semibold tracking-[0.3em] text-accent uppercase mb-4 block">Who We Are</span>
           <h2 class="text-4xl md:text-5xl font-bold text-ink tracking-tight mb-6 font-display">About Pelennor</h2>
         </div>
-
         <div class="space-y-6 text-smoke text-lg leading-relaxed font-light">
           <p>
             Pelennor Studio is an AI generative film studio dedicated to telling the stories that matter most -- historical epics and Christian narratives that have shaped civilisations and inspired generations.
@@ -147,7 +171,6 @@ const films = [
             We believe the greatest stories ever told deserve to be told again, with reverence and excellence, using the most advanced creative tools available. Every film we produce is crafted with families and children in mind -- entertainment that honours the past and inspires the future.
           </p>
         </div>
-
         <div class="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8">
           <div class="text-center">
             <div class="w-12 h-12 mx-auto mb-4 rounded-full bg-ink/5 flex items-center justify-center">
@@ -181,7 +204,6 @@ const films = [
       <div class="max-w-4xl mx-auto">
         <div class="relative bg-white border border-graphite/15 rounded-sm overflow-hidden shadow-sm">
           <div class="h-1 bg-ink"></div>
-          
           <div class="p-8 md:p-12 lg:p-16">
             <div class="text-center mb-10">
               <span class="text-xs font-semibold tracking-[0.3em] text-accent uppercase mb-4 block">Join the Journey</span>
@@ -190,7 +212,6 @@ const films = [
                 Every great story needs patrons. Become part of the Pelennor community and help us bring these stories to life.
               </p>
             </div>
-
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
               <div class="bg-snow border border-graphite/10 rounded-sm p-6 text-center hover:border-accent/30 transition-colors">
                 <span class="text-xs font-semibold tracking-widest text-smoke uppercase mb-3 block">Subscriber</span>
@@ -211,7 +232,6 @@ const films = [
                 <p class="text-sm text-smoke font-light mt-3">All benefits + exclusive director's commentary and artbook</p>
               </div>
             </div>
-
             <div class="text-center">
               <a href="https://www.patreon.com" target="_blank" rel="noopener noreferrer" 
                  class="inline-flex items-center justify-center px-10 py-4 bg-ink text-white text-sm font-bold rounded-sm hover:bg-graphite transition-colors tracking-wide uppercase">
@@ -246,21 +266,98 @@ const films = [
   </footer>
 
   <script>
+    // Mobile menu toggle
     const menuBtn = document.getElementById('mobile-menu-btn');
     const mobileMenu = document.getElementById('mobile-menu');
-    menuBtn?.addEventListener('click', () => {
-      mobileMenu?.classList.toggle('hidden');
-    });
+    menuBtn?.addEventListener('click', () => { mobileMenu?.classList.toggle('hidden'); });
     mobileMenu?.querySelectorAll('a').forEach(link => {
-      link.addEventListener('click', () => {
-        mobileMenu?.classList.add('hidden');
-      });
+      link.addEventListener('click', () => { mobileMenu?.classList.add('hidden'); });
     });
+
+    // Smooth scroll for anchor links
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
       anchor.addEventListener('click', (e) => {
         e.preventDefault();
         const target = document.querySelector(anchor.getAttribute('href'));
         target?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    });
+
+    // Film section: sticky progress bar & scroll-next buttons
+    const filmsSection = document.querySelector('[data-films-section]');
+    const progressBar = document.querySelector('[data-progress-bar]');
+    const progressFill = document.getElementById('film-progress-fill');
+    const progressLabel = document.querySelector('[data-progress-label]');
+    const progressTitle = document.querySelector('[data-progress-title]');
+    const slides = document.querySelectorAll('[data-film-slide]');
+    const nextBtn = document.querySelector('[data-next-btn]');
+    const scrollNextBtns = document.querySelectorAll('[data-scroll-next]');
+
+    const filmData = Array.from(slides).map((slide, i) => ({
+      element: slide,
+      title: slide.querySelector('h2')?.textContent || '',
+      index: i
+    }));
+
+    function updateProgressBar() {
+      if (!filmsSection || !progressBar || !progressFill) return;
+
+      const sectionRect = filmsSection.getBoundingClientRect();
+      const sectionTop = filmsSection.offsetTop;
+      const sectionHeight = filmsSection.offsetHeight;
+      const scrollY = window.scrollY;
+
+      // Show/hide progress bar when in films section
+      const inFilms = sectionRect.top < 100 && sectionRect.bottom > 100;
+      progressBar.classList.toggle('hidden', !inFilms);
+
+      if (!inFilms) return;
+
+      // Calculate progress through films section
+      const progressInSection = (scrollY - sectionTop) / (sectionHeight - window.innerHeight);
+      const clampedProgress = Math.max(0, Math.min(1, progressInSection));
+      progressFill.style.width = `${clampedProgress * 100}%`;
+
+      // Find current slide
+      let currentSlide = 0;
+      filmData.forEach((film, i) => {
+        const rect = film.element.getBoundingClientRect();
+        if (rect.top < window.innerHeight / 2) {
+          currentSlide = i;
+        }
+      });
+
+      // Ensure at least slide 0 when at top of section
+      if (sectionRect.top > 0) currentSlide = 0;
+
+      progressLabel.textContent = `${String(currentSlide + 1).padStart(2, '0')} / ${String(filmData.length).padStart(2, '0')}`;
+      progressTitle.textContent = filmData[currentSlide]?.title || '';
+    }
+
+    window.addEventListener('scroll', updateProgressBar, { passive: true });
+    updateProgressBar();
+
+    // Next film button in progress bar
+    nextBtn?.addEventListener('click', () => {
+      let currentSlide = 0;
+      filmData.forEach((film, i) => {
+        const rect = film.element.getBoundingClientRect();
+        if (rect.top < window.innerHeight / 2) currentSlide = i;
+      });
+      const nextSlide = filmData[currentSlide + 1];
+      if (nextSlide) {
+        nextSlide.element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+
+    // Large arrow scroll-next buttons on each slide
+    scrollNextBtns.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const currentSlide = btn.closest('[data-film-slide]');
+        const nextSlide = currentSlide?.nextElementSibling;
+        if (nextSlide && nextSlide.hasAttribute('data-film-slide')) {
+          nextSlide.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
       });
     });
   </script>
